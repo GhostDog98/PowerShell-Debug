@@ -1,6 +1,6 @@
 # NOTE: THIS PROJECT IS IN NO WAY ENDORSED BY MICROSOFT (the source code however is from microsofts repo), NOR IS THE PROJECT CREATER.
 # PowerShell debugging tool
-This is a simple tool that simply prints out whatever a powershell command is truely doing, this is useful sometimes to de-obsfuricate powershell commands.
+This is a simple tool that simply prints out whatever a powershell command is truely doing, this is useful sometimes to de-obfuscate powershell commands.
 
 ### Suggestions:
 To suggest features, simply put up an issue or pull request, and i'll probably impliment it.
