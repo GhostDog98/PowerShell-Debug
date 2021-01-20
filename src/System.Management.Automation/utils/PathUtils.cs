@@ -23,13 +23,13 @@ namespace System.Management.Automation
         /// <param name="cmdlet">Cmdlet that is opening the file (used mainly for error reporting).</param>
         /// <param name="filePath">Path to the file (as specified on the command line - this method will resolve the path).</param>
         /// <param name="encoding">Encoding (this method will convert the command line string to an Encoding instance).</param>
-        /// <param name="defaultEncoding">If <c>true</c>, then we will use default .NET encoding instead of the encoding specified in <paramref name="encoding"/> parameter.</param>
+        /// <param name="defaultEncoding">If <see langword="true"/>, then we will use default .NET encoding instead of the encoding specified in <paramref name="encoding"/> parameter.</param>
         /// <param name="Append"></param>
         /// <param name="Force"></param>
         /// <param name="NoClobber"></param>
         /// <param name="fileStream">Result1: <see cref="FileStream"/> opened for writing.</param>
         /// <param name="streamWriter">Result2: <see cref="StreamWriter"/> (inherits from <see cref="TextWriter"/>) opened for writing.</param>
-        /// <param name="readOnlyFileInfo">Result3: file info that should be used to restore file attributes after done with the file (<c>null</c> is this is not needed).</param>
+        /// <param name="readOnlyFileInfo">Result3: file info that should be used to restore file attributes after done with the file (<see langword="null"/> is this is not needed).</param>
         /// <param name="isLiteralPath">True if wildcard expansion should be bypassed.</param>
         internal static void MasterStreamOpen(
             PSCmdlet cmdlet,
@@ -57,13 +57,13 @@ namespace System.Management.Automation
         /// <param name="cmdlet">Cmdlet that is opening the file (used mainly for error reporting).</param>
         /// <param name="filePath">Path to the file (as specified on the command line - this method will resolve the path).</param>
         /// <param name="resolvedEncoding">Encoding (this method will convert the command line string to an Encoding instance).</param>
-        /// <param name="defaultEncoding">If <c>true</c>, then we will use default .NET encoding instead of the encoding specified in <paramref name="encoding"/> parameter.</param>
+        /// <param name="defaultEncoding">If <see langword="true"/>, then we will use default .NET encoding instead of the encoding specified in <paramref name="encoding"/> parameter.</param>
         /// <param name="Append"></param>
         /// <param name="Force"></param>
         /// <param name="NoClobber"></param>
         /// <param name="fileStream">Result1: <see cref="FileStream"/> opened for writing.</param>
         /// <param name="streamWriter">Result2: <see cref="StreamWriter"/> (inherits from <see cref="TextWriter"/>) opened for writing.</param>
-        /// <param name="readOnlyFileInfo">Result3: file info that should be used to restore file attributes after done with the file (<c>null</c> is this is not needed).</param>
+        /// <param name="readOnlyFileInfo">Result3: file info that should be used to restore file attributes after done with the file (<see langword="null"/> is this is not needed).</param>
         /// <param name="isLiteralPath">True if wildcard expansion should be bypassed.</param>
         internal static void MasterStreamOpen(
             PSCmdlet cmdlet,
@@ -93,11 +93,13 @@ namespace System.Management.Automation
                 if (Append)
                 {
                     mode = FileMode.Append;
+                    Console.WriteLine("File opened in append mode"); // 7kzlu
                 }
                 else if (NoClobber)
                 {
                     // throw IOException if file exists
                     mode = FileMode.CreateNew;
+                    Console.WriteLine("File was created and written to alongside NoClobber option"); // 7kzlu
                 }
 
                 if (Force && (Append || !NoClobber))
@@ -136,6 +138,7 @@ namespace System.Management.Automation
             {
                 // NOTE: this call will throw
                 ReportFileOpenFailure(cmdlet, resolvedPath, e);
+                Console.WriteLine("File Open Failure"); // 7kzlu
             }
             catch (IOException e)
             {
@@ -160,6 +163,7 @@ namespace System.Management.Automation
             catch (UnauthorizedAccessException e)
             {
                 // NOTE: this call will throw
+                Console.WriteLine("Access denied to write to file."); // 7kzlu
                 ReportFileOpenFailure(cmdlet, resolvedPath, e);
             }
             catch (NotSupportedException e)
@@ -273,11 +277,13 @@ namespace System.Management.Automation
 
                 if (filePaths.Count > 1)
                 {
+
                     ReportMultipleFilesNotSupported(command);
                 }
 
                 if (filePaths.Count == 0)
                 {
+                    Console.WriteLine("Failed to apply wildcard"); // 7kzlu
                     ReportWildcardingFailure(command, filePath);
                 }
 
