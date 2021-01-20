@@ -1,5 +1,13 @@
 # NOTE: THIS PROJECT IS IN NO WAY ENDORSED BY MICROSOFT (the source code however is from microsofts repo), NOR IS THE PROJECT CREATER.
 # PowerShell debugging tool
+This is a simple tool that simply prints out whatever a powershell command is truely doing, this is useful sometimes to de-obsfuricate powershell commands.
+
+### Suggestions:
+To suggest features, simply put up an issue or pull request, and i'll probably impliment it.
+
+### ToDo:
+Report registry functions (if anyone wants to figure this out, good luck, as the file for registry stuff is ~4000 lines long...)
+Change/Add to the current way of reporting commands to setting an eventViewer event, as this is more permanent and also catchable if the program is not run in a visable window.
 
 
 ## Downloading the Source Code
