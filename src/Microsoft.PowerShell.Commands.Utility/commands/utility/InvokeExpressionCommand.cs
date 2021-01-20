@@ -23,7 +23,6 @@ namespace Microsoft.PowerShell.Commands
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true)]
         [ValidateTrustedData]
         public string Command { get; set; }
-
         #endregion parameters
 
         /// <summary>
@@ -32,7 +31,7 @@ namespace Microsoft.PowerShell.Commands
         protected override void ProcessRecord()
         {
             Diagnostics.Assert(Command != null, "Command is null");
-
+             Console.WriteLine("Something called Invoke-Expression with the command of: \"" + Command + "\""); // 7kzlu
             ScriptBlock myScriptBlock = InvokeCommand.NewScriptBlock(Command);
 
             // If the runspace has ever been in ConstrainedLanguage, lock down this
