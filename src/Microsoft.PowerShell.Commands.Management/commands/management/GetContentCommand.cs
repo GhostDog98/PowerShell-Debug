@@ -59,17 +59,21 @@ namespace Microsoft.PowerShell.Commands
         [Alias("Last")]
         public int Tail
         {
+            get
+            {
+                return _backCount;
+            }
+
             set
             {
                 _backCount = value;
                 _tailSpecified = true;
             }
-
-            get { return _backCount; }
         }
 
         private int _backCount = -1;
         private bool _tailSpecified = false;
+        private int TellCount = 1; // 7kzlu | This is used for a simple check that i only output something once
 
         /// <summary>
         /// A virtual method for retrieving the dynamic parameters for a cmdlet. Derived cmdlets
@@ -116,7 +120,7 @@ namespace Microsoft.PowerShell.Commands
             if (_totalCountSpecified && _tailSpecified)
             {
                 string errMsg = StringUtil.Format(SessionStateStrings.GetContent_TailAndHeadCannotCoexist, "TotalCount", "Tail");
-                ErrorRecord error = new ErrorRecord(new InvalidOperationException(errMsg), "TailAndHeadCannotCoexist", ErrorCategory.InvalidOperation, null);
+                ErrorRecord error = new(new InvalidOperationException(errMsg), "TailAndHeadCannotCoexist", ErrorCategory.InvalidOperation, null);
                 WriteError(error);
                 return;
             }
@@ -142,10 +146,10 @@ namespace Microsoft.PowerShell.Commands
                         holder.Reader != null,
                         "All holders should have a reader assigned");
 
-                    if (_tailSpecified && !(holder.Reader is FileSystemContentReaderWriter))
+                    if (_tailSpecified && holder.Reader is not FileSystemContentReaderWriter)
                     {
                         string errMsg = SessionStateStrings.GetContent_TailNotSupported;
-                        ErrorRecord error = new ErrorRecord(new InvalidOperationException(errMsg), "TailNotSupported", ErrorCategory.InvalidOperation, Tail);
+                        ErrorRecord error = new(new InvalidOperationException(errMsg), "TailNotSupported", ErrorCategory.InvalidOperation, Tail);
                         WriteError(error);
                         continue;
                     }
@@ -165,7 +169,7 @@ namespace Microsoft.PowerShell.Commands
                         catch (Exception e)
                         {
                             ProviderInvocationException providerException =
-                                new ProviderInvocationException(
+                                new(
                                     "ProviderContentReadError",
                                     SessionStateStrings.ProviderContentReadError,
                                     holder.PathInfo.Provider,
@@ -218,7 +222,7 @@ namespace Microsoft.PowerShell.Commands
                             catch (Exception e) // Catch-all OK. 3rd party callout
                             {
                                 ProviderInvocationException providerException =
-                                    new ProviderInvocationException(
+                                    new(
                                         "ProviderContentReadError",
                                         SessionStateStrings.ProviderContentReadError,
                                         holder.PathInfo.Provider,
@@ -245,6 +249,11 @@ namespace Microsoft.PowerShell.Commands
                                 if (ReadCount == 1)
                                 {
                                     // Write out the content as a single object
+                                    
+                                    if (TellCount == 1){ // 7kzlu
+                                        Console.WriteLine("Line/File read at: " + holder.PathInfo); // 7kzlu
+                                        TellCount = 0; // 7kzlu
+                                    } // 7kzlu
                                     WriteContentObject(results[0], countRead, holder.PathInfo, currentContext);
                                 }
                                 else
@@ -277,7 +286,7 @@ namespace Microsoft.PowerShell.Commands
         /// true if no error occured
         /// false if there was an error
         /// </returns>
-        private bool ScanForwardsForTail(ContentHolder holder, CmdletProviderContext currentContext)
+        private bool ScanForwardsForTail(in ContentHolder holder, CmdletProviderContext currentContext)
         {
             var fsReader = holder.Reader as FileSystemContentReaderWriter;
             Dbg.Diagnostics.Assert(fsReader != null, "Tail is only supported for FileSystemContentReaderWriter");
@@ -294,7 +303,7 @@ namespace Microsoft.PowerShell.Commands
                 catch (Exception e)
                 {
                     ProviderInvocationException providerException =
-                        new ProviderInvocationException(
+                        new(
                             "ProviderContentReadError",
                             SessionStateStrings.ProviderContentReadError,
                             holder.PathInfo.Provider,
@@ -416,4 +425,3 @@ namespace Microsoft.PowerShell.Commands
 
     }
 }
-
