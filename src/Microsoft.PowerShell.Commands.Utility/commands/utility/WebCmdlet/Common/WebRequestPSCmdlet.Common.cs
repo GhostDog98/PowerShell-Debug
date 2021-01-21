@@ -1353,6 +1353,8 @@ namespace Microsoft.PowerShell.Commands
             {
                 // Track the current URI being used by various requests and re-requests.
                 var currentUri = req.RequestUri;
+                Console.WriteLine("Web request to this URL: " + currentUri); // 7kzlu
+
 
                 _cancelToken = new CancellationTokenSource();
                 response = client.SendAsync(req, HttpCompletionOption.ResponseHeadersRead, _cancelToken.Token).GetAwaiter().GetResult();

@@ -199,6 +199,9 @@ namespace Microsoft.PowerShell.Commands
         private LineOutput InstantiateLineOutputInterface()
         {
             string action = StringUtil.Format(FormatAndOut_out_xxx.OutFile_Action);
+
+            Console.WriteLine("File written to at: " + FilePath); // 7kzlu
+
             if (ShouldProcess(FilePath, action))
             {
                 PathUtils.MasterStreamOpen(

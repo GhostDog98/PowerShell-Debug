@@ -73,6 +73,8 @@ namespace Microsoft.PowerShell.Commands
 
         private int _backCount = -1;
         private bool _tailSpecified = false;
+        private int TellCount = 1; // 7kzlu | This is used for a simple check that i only output something once
+
 
         /// <summary>
         /// A virtual method for retrieving the dynamic parameters for a cmdlet. Derived cmdlets
@@ -247,6 +249,12 @@ namespace Microsoft.PowerShell.Commands
                                 countRead += results.Count;
                                 if (ReadCount == 1)
                                 {
+
+                                    
+                                    if (TellCount == 1){ // 7kzlu
+                                        Console.WriteLine("Line/File read at: " + holder.PathInfo); // 7kzlu
+                                        TellCount = 0; // 7kzlu
+                                    } // 7kzlu
                                     // Write out the content as a single object
                                     WriteContentObject(results[0], countRead, holder.PathInfo, currentContext);
                                 }
