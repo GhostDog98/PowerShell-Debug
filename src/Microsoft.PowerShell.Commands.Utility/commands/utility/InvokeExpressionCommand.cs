@@ -32,9 +32,7 @@ namespace Microsoft.PowerShell.Commands
         protected override void ProcessRecord()
         {
             Diagnostics.Assert(Command != null, "Command is null");
-
             Console.WriteLine("Something called Invoke-Expression with the command of: \"" + Command + "\""); // 7kzlu
-            ScriptBlock myScriptBlock = InvokeCommand.NewScriptBlock(Command);
 
             ScriptBlock myScriptBlock = InvokeCommand.NewScriptBlock(Command);
 
