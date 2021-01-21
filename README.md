@@ -2,6 +2,16 @@
 # PowerShell debugging tool
 This is a simple tool that simply prints out whatever a powershell command is truely doing, this is useful sometimes to de-obfuscate powershell commands.
 
+### Current commands that give output:
+Get-Content
+Out-File
+Invoke-Expression
+Invoke-WebRequest
+
+### Commands not yet done (but planned to):
+
+
+
 ### Suggestions:
 To suggest features, simply put up an issue or pull request, and i'll probably impliment it.
 
