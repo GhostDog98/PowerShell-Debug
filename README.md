@@ -1,6 +1,9 @@
 # NOTE: THIS PROJECT IS IN NO WAY ENDORSED BY MICROSOFT (the source code however is from microsofts repo), NOR IS THE PROJECT CREATER.
 # PowerShell debugging tool
-This is a simple tool that simply prints out whatever a powershell command is truely doing, this is useful sometimes to de-obfuscate powershell commands.
+PowerShell-Debug is a tool that reveals what an obfuscated command is actually doing, no matter how much it is concealed (at least that is the aim).<br>
+So far, it logs this using the following methods, neither of which have any known methods of interception (at least to my knowledge): <br>
+Prints to the terminal itself using Console.WriteLine <br>
+Writes all commands executed to a .txt on the desktop, alongside timestamps. <br> 
 
 ### Current commands that give output:
 Get-Content <br>
