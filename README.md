@@ -3,10 +3,10 @@
 This is a simple tool that simply prints out whatever a powershell command is truely doing, this is useful sometimes to de-obfuscate powershell commands.
 
 ### Current commands that give output:
-Get-Content
-Out-File
-Invoke-Expression
-Invoke-WebRequest
+Get-Content <br>
+Out-File <br>
+Invoke-Expression <br>
+Invoke-WebRequest <br>
 
 ### Commands not yet done (but planned to):
 
