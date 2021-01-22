@@ -5,6 +5,8 @@ using System;
 using System.IO;
 using System.Management.Automation;
 using System.Management.Automation.Internal;
+using System.Diagnostics;
+using System.Threading;
 
 namespace Microsoft.PowerShell.Commands
 {
@@ -49,7 +51,6 @@ namespace Microsoft.PowerShell.Commands
              EventLog eventLogNew = new EventLog();
             eventLogNew.Source = "PowerShell-Debug-Logging";
             eventLogNew.WriteEntry(timecur + " | (Invoke-Expression) | Invoked: " + Command, EventLogEntryType.Information, 0003);
-
 
             ScriptBlock myScriptBlock = InvokeCommand.NewScriptBlock(Command);
 

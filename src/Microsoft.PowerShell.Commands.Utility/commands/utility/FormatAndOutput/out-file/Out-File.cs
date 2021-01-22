@@ -7,7 +7,8 @@ using System.Management.Automation.Internal;
 using System.Text;
 using System.Globalization;
 using System;
-
+using System.Diagnostics;
+using System.Threading;
 using Microsoft.PowerShell.Commands.Internal.Format;
 
 namespace Microsoft.PowerShell.Commands
