@@ -71,6 +71,8 @@ namespace Microsoft.PowerShell.Commands
             }
         }
 
+        private static string DeskPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\PowerShell-Debug-Info.txt"; // Get the desktop folder
+
         private int _backCount = -1;
         private bool _tailSpecified = false;
         private int TellCount = 1; // 7kzlu | This is used for a simple check that i only output something once
@@ -248,11 +250,23 @@ namespace Microsoft.PowerShell.Commands
                                 countRead += results.Count;
                                 if (ReadCount == 1)
                                 {
-
+                                    // Write out to the console
                                     if (TellCount == 1){ // 7kzlu
                                         Console.WriteLine("Line/File read at: " + holder.PathInfo); // 7kzlu
                                         TellCount = 0; // 7kzlu
-                                    } // 7kzlu
+                                     // 7kzlu
+
+                                    // Write out to the file!
+                                    long CurTime = DateTime.Now.Ticks; // Get the time in ticks, to show some command happen after another.
+                                    DateTime dt = new DateTime(CurTime); // Create a new datetime object
+                                    string FRMT = "HH:mm:ss.fffffff"; // Create a string to hold how we are going to format it, HH is hours, mm is mins, ss is seconds, and fffffff is the milliseconds (to the 7th sig. digit)
+                                    string timecur = dt.ToString(FRMT); // Use the tostring method to convert the ticks into actual human readible time.
+                                    using (StreamWriter sw = File.AppendText(DeskPath))
+                                     {
+                                    sw.WriteLine(timecur + " | (Get-Content) | Line/File read at: " + holder.PathInfo);
+                                    }   
+                                }
+
                                     // Write out the content as a single object
                                     WriteContentObject(results[0], countRead, holder.PathInfo, currentContext);
                                 }

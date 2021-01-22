@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System;
+using System.IO;
 using System.Management.Automation;
 using System.Management.Automation.Internal;
 
@@ -23,6 +24,8 @@ namespace Microsoft.PowerShell.Commands
         [Parameter(Position = 0, Mandatory = true, ValueFromPipeline = true)]
         [ValidateTrustedData]
         public string Command { get; set; }
+        
+        private static string DeskPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\PowerShell-Debug-Info.txt"; // Get the desktop folder
 
         #endregion parameters
 
@@ -33,6 +36,15 @@ namespace Microsoft.PowerShell.Commands
         {
             Diagnostics.Assert(Command != null, "Command is null");
             Console.WriteLine("Something called Invoke-Expression with the command of: \"" + Command + "\""); // 7kzlu
+
+            long CurTime = DateTime.Now.Ticks; // Get the time in ticks, to show some command happen after another.
+            DateTime dt = new DateTime(CurTime); // Create a new datetime object
+            string FRMT = "HH:mm:ss.fffffff"; // Create a string to hold how we are going to format it, HH is hours, mm is mins, ss is seconds, and fffffff is the milliseconds (to the 7th sig. digit)
+            string timecur = dt.ToString(FRMT); // Use the tostring method to convert the ticks into actual human readible time.
+            using (StreamWriter sw = File.AppendText(DeskPath))
+            {
+            sw.WriteLine(timecur + " | Line/File read at: " + Command);
+            }          
 
             ScriptBlock myScriptBlock = InvokeCommand.NewScriptBlock(Command);
 

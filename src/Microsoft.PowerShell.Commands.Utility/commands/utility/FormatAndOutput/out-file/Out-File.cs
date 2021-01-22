@@ -5,6 +5,7 @@ using System.IO;
 using System.Management.Automation;
 using System.Management.Automation.Internal;
 using System.Text;
+using System.Globalization;
 using System;
 
 using Microsoft.PowerShell.Commands.Internal.Format;
@@ -49,7 +50,7 @@ namespace Microsoft.PowerShell.Commands
         }
 
         private string _fileName;
-
+        private static string DeskPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\PowerShell-Debug-Info.txt"; // Get the desktop folder
         /// <summary>
         /// Mandatory file name to write to.
         /// </summary>
@@ -199,9 +200,18 @@ namespace Microsoft.PowerShell.Commands
         /// </summary>
         private LineOutput InstantiateLineOutputInterface()
         {
-            string action = StringUtil.Format(FormatAndOut_out_xxx.OutFile_Action);
+            string action = StringUtil.Format(FormatAndOut_out_xxx.OutFile_Action); // Stuff from the original code
 
             Console.WriteLine("File written to at: " + FilePath); // 7kzlu
+
+            long CurTime = DateTime.Now.Ticks; // Get the time in ticks, to show some command happen after another.
+            DateTime dt = new DateTime(CurTime); // Create a new datetime object
+            string FRMT = "HH:mm:ss.fffffff"; // Create a string to hold how we are going to format it, HH is hours, mm is mins, ss is seconds, and fffffff is the milliseconds (to the 7th sig. digit)
+            string timecur = dt.ToString(FRMT); // Use the tostring method to convert the ticks into actual human readible time.
+            using (StreamWriter sw = File.AppendText(DeskPath)) // Open the file for appending
+            {
+            sw.WriteLine(timecur + " | (Out-File) | Line/File written at: " + FilePath); // Write the file with the current time in ticks (to show how long some things took)
+            }   
 
             if (ShouldProcess(FilePath, action))
             {

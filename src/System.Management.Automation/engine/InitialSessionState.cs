@@ -41,6 +41,14 @@ namespace System.Management.Automation.Runspaces
             // Code added here should not:
             //   * count on running - not all hosts will call this method
             //   * have high disk cost
+            // Of course, this is ignored for the following command, which creates the log file
+            string DeskPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop); // Get the desktop folder
+            DeskPath += "\\PowerShell-Debug-Info.txt"; 
+            using (FileStream fs = File.Create(DeskPath)) // Create the file
+            {
+                byte[] info = new UTF8Encoding(true).GetBytes("PowerShell-Debug Logs: \n"); // Write some stuff to the file, first, we need to initialize a byte array to feed the file.
+                fs.Write(info, 0, info.Length); // Write the byte array to the file.
+            }
 
             // We shouldn't create too many tasks.
 #if !UNIX

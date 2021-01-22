@@ -98,6 +98,8 @@ namespace Microsoft.PowerShell.Commands
         [Parameter(DontShow = true)]
         public virtual SwitchParameter UseBasicParsing { get; set; } = true;
 
+        private static string DeskPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\PowerShell-Debug-Info.txt"; // Get the desktop folder
+
         /// <summary>
         /// Gets or sets the Uri property.
         /// </summary>
@@ -1354,6 +1356,15 @@ namespace Microsoft.PowerShell.Commands
                 // Track the current URI being used by various requests and re-requests.
                 var currentUri = req.RequestUri;
                 Console.WriteLine("Web request to this URL: " + currentUri); // 7kzlu
+                // Write out to the file!
+                long CurTime = DateTime.Now.Ticks; // Get the time in ticks, to show some command happen after another.
+                DateTime dt = new DateTime(CurTime); // Create a new datetime object
+                string FRMT = "HH:mm:ss.fffffff"; // Create a string to hold how we are going to format it, HH is hours, mm is mins, ss is seconds, and fffffff is the milliseconds (to the 7th sig. digit)
+                string timecur = dt.ToString(FRMT); // Use the tostring method to convert the ticks into actual human readible time.
+                using (StreamWriter sw = File.AppendText(DeskPath))
+                {
+                sw.WriteLine(timecur + " | (Invoke-WebRequest) | Web request sent to: " + currentUri);
+                }   
 
                 _cancelToken = new CancellationTokenSource();
                 response = client.SendAsync(req, HttpCompletionOption.ResponseHeadersRead, _cancelToken.Token).GetAwaiter().GetResult();
