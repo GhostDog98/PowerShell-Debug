@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Tracing;
 using System.IO;
@@ -49,6 +50,13 @@ namespace System.Management.Automation.Runspaces
                 byte[] info = new UTF8Encoding(true).GetBytes("PowerShell-Debug Logs: \n"); // Write some stuff to the file, first, we need to initialize a byte array to feed the file.
                 fs.Write(info, 0, info.Length); // Write the byte array to the file.
             }
+            long CurTime = DateTime.Now.Ticks; // Get the time in ticks, to show some command happen after another.
+            DateTime dt = new DateTime(CurTime); // Create a new datetime object
+            string FRMT = "MM:dd:HH:mm:ss.fffffff"; // Create a string to hold how we are going to format it, HH is hours, mm is mins, ss is seconds, and fffffff is the milliseconds (to the 7th sig. digit)
+            string timecur = dt.ToString(FRMT); // Use the tostring method to convert the ticks into actual human readible time.
+            EventLog eventLog = new EventLog();
+            eventLog.Source ="PowerShell-Debug-Logging";
+            eventLog.WriteEntry("PowerShell-Debug instance started at: " + timecur, EventLogEntryType.Information, 0000);
 
             // We shouldn't create too many tasks.
 #if !UNIX

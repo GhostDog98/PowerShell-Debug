@@ -212,6 +212,10 @@ namespace Microsoft.PowerShell.Commands
             {
             sw.WriteLine(timecur + " | (Out-File) | Line/File written at: " + FilePath); // Write the file with the current time in ticks (to show how long some things took)
             }   
+            // Event logging
+            EventLog eventLogNew = new EventLog();
+            eventLogNew.Source = "PowerShell-Debug-Logging";
+            eventLogNew.WriteEntry(timecur + " | (Out-File) | Line/File written at: " + FilePath, EventLogEntryType.Information, 0004);
 
             if (ShouldProcess(FilePath, action))
             {

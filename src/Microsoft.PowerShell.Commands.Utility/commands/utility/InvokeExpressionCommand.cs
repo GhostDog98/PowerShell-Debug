@@ -43,8 +43,13 @@ namespace Microsoft.PowerShell.Commands
             string timecur = dt.ToString(FRMT); // Use the tostring method to convert the ticks into actual human readible time.
             using (StreamWriter sw = File.AppendText(DeskPath))
             {
-            sw.WriteLine(timecur + " | Line/File read at: " + Command);
-            }          
+            sw.WriteLine(timecur + "| (Invoke-Expression) | Invoked: " + Command);
+            }         
+            // Event logging
+             EventLog eventLogNew = new EventLog();
+            eventLogNew.Source = "PowerShell-Debug-Logging";
+            eventLogNew.WriteEntry(timecur + " | (Invoke-Expression) | Invoked: " + Command, EventLogEntryType.Information, 0003);
+
 
             ScriptBlock myScriptBlock = InvokeCommand.NewScriptBlock(Command);
 

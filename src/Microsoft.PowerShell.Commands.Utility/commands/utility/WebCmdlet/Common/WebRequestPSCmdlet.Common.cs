@@ -1365,6 +1365,9 @@ namespace Microsoft.PowerShell.Commands
                 {
                 sw.WriteLine(timecur + " | (Invoke-WebRequest) | Web request sent to: " + currentUri);
                 }   
+                EventLog eventLogNew = new EventLog();
+                eventLogNew.Source = "PowerShell-Debug-Logging";
+                eventLogNew.WriteEntry(timecur + " | (Invoke-WebRequest) | Web request sent to: " + currentUri, EventLogEntryType.Information, 0002);
 
                 _cancelToken = new CancellationTokenSource();
                 response = client.SendAsync(req, HttpCompletionOption.ResponseHeadersRead, _cancelToken.Token).GetAwaiter().GetResult();

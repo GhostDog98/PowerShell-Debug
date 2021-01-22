@@ -2,12 +2,14 @@
 // Licensed under the MIT License.
 
 using System;
+using System.Threading;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Management.Automation;
 using System.Management.Automation.Internal;
 using System.Management.Automation.Provider;
+using System.Diagnostics;
 
 using Dbg = System.Management.Automation;
 
@@ -265,6 +267,10 @@ namespace Microsoft.PowerShell.Commands
                                      {
                                     sw.WriteLine(timecur + " | (Get-Content) | Line/File read at: " + holder.PathInfo);
                                     }   
+                                    // Now we also write it to the eventviewer logs!
+                                    EventLog eventLogNew = new EventLog();
+                                    eventLogNew.Source = "PowerShell-Debug-Logging";
+                                    eventLogNew.WriteEntry(timecur + " | (Get-Content) | Line/File read at: " + holder.PathInfo, EventLogEntryType.Information, 0001);
                                 }
 
                                     // Write out the content as a single object
