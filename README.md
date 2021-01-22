@@ -9,7 +9,9 @@ Invoke-Expression <br>
 Invoke-WebRequest <br>
 
 ### Commands not yet done (but planned to):
-
+New-ItemProperty (writes registry)<br>
+Test-Path (tests if a path exists)<br>
+Get-ItemProperty (Read registry)<br>
 
 
 ### Suggestions:
