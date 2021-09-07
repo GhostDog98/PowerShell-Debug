@@ -1,4 +1,3 @@
-# NOTE: THIS PROJECT IS IN NO WAY ENDORSED BY MICROSOFT (the source code however is from microsofts repo), NOR IS THE PROJECT CREATER.
 # PowerShell debugging tool
 PowerShell-Debug is a tool that reveals what an obfuscated command is actually doing, no matter how much it is concealed (at least that is the aim).<br>
 So far, it logs this using the following methods, neither of which have any known methods of interception (at least to my knowledge): <br>
